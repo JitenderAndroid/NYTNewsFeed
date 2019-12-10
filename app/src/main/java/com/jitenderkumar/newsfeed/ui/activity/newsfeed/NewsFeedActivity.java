@@ -1,15 +1,13 @@
 package com.jitenderkumar.newsfeed.ui.activity.newsfeed;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jitenderkumar.newsfeed.R;
 import com.jitenderkumar.newsfeed.models.FeedListResponse;
@@ -20,7 +18,7 @@ import com.jitenderkumar.newsfeed.ui.adapter.FeedAdapter;
 
 import java.util.ArrayList;
 
-public class NewsFeedActivity extends AppCompatActivity {
+public class NewsFeedActivity extends AppCompatActivity  {
 
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
@@ -31,7 +29,6 @@ public class NewsFeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
 
-        ViewModel  viewModel = ViewModelProviders.of(this).get(NewsFeedViewModel.class);
         initViews();
     }
 
@@ -46,7 +43,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         getNewsFeed();
     }
 
-    private void getNewsFeed() {
+     private void getNewsFeed() {
         mProgressBar.setVisibility(View.VISIBLE);
         DataManager.getInstance().getFeedList(new DataManager.DataManagerListener() {
             @Override
