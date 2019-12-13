@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.NewsDetailActivity"/>
+        <activity android:name=".ui.activity.newsdetail.NewsDetailActivity"/>
         <!--<activity android:name=".ui.activity.NewsFeedActivity" />-->
         <activity android:name=".ui.activity.newsfeed.NewsFeedActivity">
             <intent-filter>
