@@ -54,7 +54,9 @@ public class NewsFeedActivity extends AppCompatActivity  {
 
         Observable<String> animalsObservable = Observable.just("Ant", "Bee", "Cat", "Dog", "Fox");
 
-        compositeDisposable.add( animalsObservable
+        compositeDisposable.add(
+
+                 animalsObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Predicate<String>() {

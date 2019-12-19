@@ -1,8 +1,16 @@
 package com.jitenderkumar.newsfeed.network;
 import com.jitenderkumar.newsfeed.models.FeedListResponse;
+import com.jitenderkumar.newsfeed.models.Price;
+import com.jitenderkumar.newsfeed.models.Ticket;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -18,9 +26,10 @@ public class DataManager {
     //https://api.nytimes.com/svc/mostpopular/v2/ viewed/7.json?api-key=uSJNhFoWrYHYG1cZXS4zBrX8Gl0oSV8y
 
     private static Retrofit retrofit = null;
-    private static String API_KEY = "uSJNhFoWrYHYG1cZXS4zBrX8Gl0oSV8y";
 
+    private static String API_KEY = "uSJNhFoWrYHYG1cZXS4zBrX8Gl0oSV8y";
     private String BASE_URL = "https://api.nytimes.com/svc/mostpopular/v2/";
+
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     private static OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -67,6 +76,29 @@ public class DataManager {
                 dataManagerListener.onError(t);
             }
         });
+    }
+
+    public Observable<List<Ticket>> getSearchTicket(String from , String to) {
+         return getDataManager()
+                 .searchTickets(from, to)
+                .toObservable()
+                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<Ticket> getPriceObservable(final Ticket ticket) {
+        return getDataManager()
+                .getPrice(ticket.getFlightNumber(), ticket.getFrom(), ticket.getTo())
+                .toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<Price, Ticket>() {
+                    @Override
+                    public Ticket apply(Price price) throws Exception {
+                        ticket.setPrice(price);
+                        return ticket;
+                    }
+                });
     }
 
     public interface DataManagerListener {
